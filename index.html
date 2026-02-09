@@ -141,39 +141,56 @@
         </p>
 
         <div class="bookmarklets-wrapper">
-            <!-- 자바스크립트에 의해 href가 자동으로 설정됩니다 -->
-            <a id="btn-macro" href="#" class="bookmarklet" onclick="event.preventDefault(); alert('이 버튼을 클릭하지 말고, 마우스로 드래그하여 북마크 바에 놓아주세요.');">매크로</a>
-            <a id="btn-offset" href="#" class="bookmarklet" onclick="event.preventDefault(); alert('이 버튼을 클릭하지 말고, 마우스로 드래그하여 북마크 바에 놓아주세요.');">오차측정</a>
+            <!-- 자바스크립트에 의해 href가 설정되고 버튼이 표시됩니다 -->
+            <a id="btn-macro" href="#" class="bookmarklet" style="display: none;" onclick="event.preventDefault(); alert('이 버튼을 클릭하지 말고, 마우스로 드래그하여 북마크 바에 놓아주세요.');">매크로</a>
+            <a id="btn-offset" href="#" class="bookmarklet" style="display: none;" onclick="event.preventDefault(); alert('이 버튼을 클릭하지 말고, 마우스로 드래그하여 북마크 바에 놓아주세요.');">오차측정</a>
         </div>
 
         <script>
             // ==========================================================================
-            // 👇 [설정] 각 기능별 깃허브 Raw 파일의 전체 경로(URL)를 입력해주세요.
-            //    파일명까지 포함된 전체 주소를 입력해도 되고, 앞부분만 입력하고 아래 로직을 수정해도 됩니다.
-            //    여기서는 '파일명 앞부분(폴더 경로)'을 입력하고 아래에서 파일명을 붙이는 방식을 유지합니다.
+            // 👇 [설정] 깃허브 Raw 파일의 전체 경로(URL)를 입력해주세요.
+            //    (반드시 Raw 버튼을 눌렀을 때 나오는 주소여야 합니다)
             // ==========================================================================
             
-            // 1. 매크로용 깃허브 경로
-            const MACRO_BASE_URL = 'YOUR_MACRO_GITHUB_RAW_URL_HERE'; 
+            // 1. 매크로 스크립트 주소
+            const MACRO_URL = 'YOUR_MACRO_GITHUB_RAW_URL_HERE'; 
             
-            // 2. 오차측정용 깃허브 경로
-            const OFFSET_BASE_URL = 'https://raw.githubusercontent.com/hellocat9561/hellocat9561.github.io/refs/heads/main/%EC%98%A4%EC%B0%A8%EC%B8%A1%EC%A0%95.js';
-            
+            // 2. 오차측정 스크립트 주소
+            const OFFSET_URL = 'https://gist.github.com/SentinelJs/a28ea74796b911ac8823780d31f930cb.js';
             // ==========================================================================
+
+            async function createFullBookmarklet(url, elementId) {
+                const btn = document.getElementById(elementId);
+                try {
+                    // 1. 깃허브에서 실제 코드를 가져옴 (Fetch)
+                    const response = await fetch(url + '?t=' + Date.now());
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    
+                    const raw_code = await response.text();
+                    let code_link = raw_code.split('<a href=\"')
+                    code_link = code_link[code_link.length - 2].split('\"')[0]
+
+                    const code_response = await fetch(code_link + '?t=' + Date.now());
+                    if (!code_response.ok) throw new Error('Network response was not ok');
+
+                    const code = await code_response.text();
+                    
+                    // 2. 가져온 코드를 북마크릿 형식으로 변환
+                    const bookmarklet = 'javascript:(function(){' + encodeURIComponent(code) + '})()';
+                    
+                    // 3. 변환된 코드를 href에 설정하고 버튼 표시
+                    btn.href = bookmarklet;
+                    btn.style.display = 'inline-block'; // 로드 성공 시에만 표시
+                    
+                } catch (error) {
+                    console.error('스크립트 로드 실패:', error);
+                    // 실패 시 버튼은 숨겨진 상태 유지
+                }
+            }
 
             window.addEventListener('DOMContentLoaded', () => {
-                const timestamp = Date.now(); // 브라우저 캐시 방지용
-
-                // 1. 매크로 파일에 대한 북마크릿 생성 및 적용
-                // 만약 URL에 파일명을 직접 포함했다면, `${MACRO_BASE_URL}?t=${timestamp}` 로 수정하세요.
-                const macroUrl = `${MACRO_BASE_URL}?t=${timestamp}`;
-                const macroCode = `javascript:(function(){var s=document.createElement('script');s.charset='UTF-8';s.src='${macroUrl}';document.head.appendChild(s);})();`;
-                document.getElementById('btn-macro').href = macroCode;
-
-                // 2. 오차측정 파일에 대한 북마크릿 생성 및 적용
-                const offsetUrl = `${OFFSET_BASE_URL}?t=${timestamp}`;
-                const offsetCode = `javascript:(function(){var s=document.createElement('script');s.charset='UTF-8';s.src='${offsetUrl}';document.head.appendChild(s);})();`;
-                document.getElementById('btn-offset').href = offsetCode;
+                createFullBookmarklet(MACRO_URL, 'btn-macro');
+                createFullBookmarklet(OFFSET_URL, 'btn-offset');
             });
         </script>
         
