@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경희대학교 수강신청 도우미</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS 스타일 시작 --- */
+        :root {
+            --khu-primary-color: #9d2235; /* 경희대학교 상징색 */
+            --background-color: #f5f5f7;
+            --container-bg-color: #ffffff;
+            --text-primary-color: #222222;
+            --text-secondary-color: #666666;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Noto Sans KR', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-primary-color);
+        }
+
+        body {
+            background-image: url('https://www.khu.ac.kr/upload/cross/images/000003/imgSub135000_01.jpg');
+            background-size: cover; /* 이미지가 화면을 꽉 채우도록 설정 */
+            background-position: center; /* 이미지가 중앙에 오도록 설정 */
+            background-attachment: fixed; /* 스크롤해도 배경은 고정 */
+            position: relative; /* 자식 요소(::before)를 위한 기준점 */
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* 반투명 흰색 오버레이. 0.85 부분의 숫자를 조절해 투명도를 변경하세요 (0~1) */
+            background-color: rgba(255, 255, 255, 0.85);
+            z-index: -1; /* 내용(container)보다 뒤에 위치하도록 설정 */
+        }
+
+        .container {
+            background-color: var(--container-bg-color);
+            padding: 40px 50px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            transition: transform 0.3s ease;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column; /* 세로 정렬로 변경 */
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .logo {
+            width: 250px;
+            height: auto;
+            margin-bottom: 15px; /* 이 줄을 추가하세요 */
+        }
+
+        h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--text-primary-color);
+            margin: 0;
+        }
+
+        .description {
+            font-size: 1.1em;
+            color: var(--text-secondary-color);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .bookmarklets-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap; /* 모바일에서 줄바꿈 */
+        }
+        
+        /* 북마크릿 버튼 스타일 */
+        .bookmarklet {
+            display: inline-block;
+            background-color: var(--khu-primary-color);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: 500;
+            cursor: move; /* 드래그 가능함을 암시 */
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(157, 34, 53, 0.3);
+        }
+
+        .bookmarklet:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(157, 34, 53, 0.4);
+            background-color: #8a1d2d;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+        /* --- CSS 스타일 끝 --- */
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="header">
+        </header>
+
+        <p class="description">
+            아래 버튼을 북마크바로 드래그하여 추가한 뒤,<br>
+            <a href="https://sugang.khu.ac.kr/">수강신청 페이지</a>에서 클릭하여 사용하세요.
+        </p>
+
+        <div class="bookmarklets-wrapper">
+            <!-- 자바스크립트에 의해 href가 설정되고 버튼이 표시됩니다 -->
+            <a id="btn-macro" href="#" class="bookmarklet" style="display: none;" onclick="event.preventDefault(); alert('이 버튼을 클릭하지 말고, 마우스로 드래그하여 북마크 바에 놓아주세요.');">ㅁㅋㄹ</a>
+            <a id="btn-offset" href="#" class="bookmarklet" style="display: none;" onclick="event.preventDefault(); alert('이 버튼을 클릭하지 말고, 마우스로 드래그하여 북마크 바에 놓아주세요.');">오차측정</a>
+        </div>
+
+        <script>
+            function _0x1a6e(){const _0x320553=['json','files','keys','파일\x20내용을\x20찾을\x20','javascript','(){','})()','style','display','inline-blo','error',']\x20스크립트\x20로드\x20','실패:','stener','DOMContent','Loaded','btn-macro','btn-offset','289395CjxDNW','380rEiSVY','627QPnddb','24ArANvH','736080CtOpeY','3750006fPHGWO','1568924vAKkBg','7078376VRBbJx','15003NbrXwn','17870TZtxHb','ae1399934e','58dc31a487','a28ea74796','b911ac8823','getElement','ById','YOUR_','https://ap','i.github.c','om/gists/','API\x20요청\x20실패:','status'];_0x1a6e=function(){return _0x320553;};return _0x1a6e();}const _0x453257=_0x575d;(function(_0x4f331d,_0x299bbd){const _0xa683b9={_0x387726:0x70,_0x298f78:0x71,_0x115a42:0x73,_0x5896b1:0x74,_0x346a4f:0x77},_0x5c75d6=_0x575d,_0x2a93da=_0x4f331d();while(!![]){try{const _0x2b5843=-parseInt(_0x5c75d6(0x6e))/0x1+parseInt(_0x5c75d6(0x6f))/0x2*(-parseInt(_0x5c75d6(_0xa683b9._0x387726))/0x3)+parseInt(_0x5c75d6(_0xa683b9._0x298f78))/0x4*(-parseInt(_0x5c75d6(0x72))/0x5)+-parseInt(_0x5c75d6(_0xa683b9._0x115a42))/0x6+parseInt(_0x5c75d6(_0xa683b9._0x5896b1))/0x7+-parseInt(_0x5c75d6(0x75))/0x8+-parseInt(_0x5c75d6(0x76))/0x9*(-parseInt(_0x5c75d6(_0xa683b9._0x346a4f))/0xa);if(_0x2b5843===_0x299bbd)break;else _0x2a93da['push'](_0x2a93da['shift']());}catch(_0x520087){_0x2a93da['push'](_0x2a93da['shift']());}}}(_0x1a6e,0x7565e));function _0x575d(_0x57bd20,_0x11cf21){_0x57bd20=_0x57bd20-0x6e;const _0x1a6e35=_0x1a6e();let _0x575d4d=_0x1a6e35[_0x57bd20];return _0x575d4d;}const _0x11999d=_0x453257(0x78)+'702001e1d3'+_0x453257(0x79)+'00',_0x14e26=_0x453257(0x7a)+_0x453257(0x7b)+'780d31f930'+'cb';async function _0x131bcb(_0x10d924,_0x4eb6f9){const _0x178ee2={_0x1ca887:0x7d,_0x33bb02:0x7f,_0x6d3ed9:0x81,_0x522adc:0x82,_0x59c228:0x83,_0x57b472:0x88,_0x2f3d5b:0x89,_0x24543b:0x8a,_0x143d6e:0x8b,_0x231d9c:0x8e,_0x406d99:0x8f,_0x470db8:0x90},_0x1bce55=_0x453257,_0x1b6377=document[_0x1bce55(0x7c)+_0x1bce55(_0x178ee2._0x1ca887)](_0x4eb6f9);if(!_0x10d924||_0x10d924['includes'](_0x1bce55(0x7e)))return;try{const _0x494948=await fetch(_0x1bce55(_0x178ee2._0x33bb02)+_0x1bce55(0x80)+_0x1bce55(_0x178ee2._0x6d3ed9)+_0x10d924);if(!_0x494948['ok'])throw new Error(_0x1bce55(_0x178ee2._0x522adc)+'\x20'+_0x494948[_0x1bce55(_0x178ee2._0x59c228)]);const _0x48d1e9=await _0x494948[_0x1bce55(0x84)](),_0xc2fd78=_0x48d1e9[_0x1bce55(0x85)],_0xc8c4cf=Object[_0x1bce55(0x86)](_0xc2fd78)[0x0],_0x45e3b5=_0xc2fd78[_0xc8c4cf]['content'];if(!_0x45e3b5)throw new Error(_0x1bce55(0x87)+'수\x20없습니다.');const _0x4c9a7e=_0x1bce55(_0x178ee2._0x57b472)+':(function'+_0x1bce55(_0x178ee2._0x2f3d5b)+encodeURIComponent(_0x45e3b5)+_0x1bce55(_0x178ee2._0x24543b);_0x1b6377['href']=_0x4c9a7e,_0x1b6377[_0x1bce55(_0x178ee2._0x143d6e)][_0x1bce55(0x8c)]=_0x1bce55(0x8d)+'ck';}catch(_0x44d012){console[_0x1bce55(_0x178ee2._0x231d9c)]('['+_0x4eb6f9+(_0x1bce55(_0x178ee2._0x406d99)+_0x1bce55(_0x178ee2._0x470db8)),_0x44d012);}}window['addEventLi'+_0x453257(0x91)](_0x453257(0x92)+_0x453257(0x93),()=>{const _0x346b31={_0x3fb20d:0x94,_0x4d0f22:0x95},_0x1ab222=_0x453257;_0x131bcb(_0x11999d,_0x1ab222(_0x346b31._0x3fb20d)),_0x131bcb(_0x14e26,_0x1ab222(_0x346b31._0x4d0f22));});
+        </script>
+        
+        <footer class="footer">
+            Course Registration Helper
+        </footer>
+    </div>
+
+</body>
+
+</html>
+
+
+
+
+
+
